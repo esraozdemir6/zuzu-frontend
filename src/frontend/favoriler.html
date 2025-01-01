@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Favorites</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            width: 100%;
+        }
+
+        .header .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .header .info {
+            position: absolute;
+            left: 45px;
+            font-size: 12px;
+        }
+
+        .header .icons {
+            position: absolute;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .icons a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .header .icons a:hover {
+            color: #ccc;
+        }
+        h1 {
+    font-size: 24px;
+    margin-top: 24px;
+    text-align: left;
+
+     }
+     .product img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for scaling */
+}
+
+.product:hover img {
+    transform: scale(1.2); /* Scales the image to 120% of its original size */
+}
+
+         /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 45px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            color: #555;
+        }
+
+        .sidebar-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            color: #fff;
+        }
+
+
+        /* Product list */
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+
+.product {
+    text-align: center;
+    width: calc(20% - 20px);
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    position: relative;
+}
+ .product img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .product button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .product button:hover {
+            background-color: #333;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: #e74c3c;
+            cursor: pointer;
+            transition: color 0.2s ease; /* Çöp kutusunun renginin geçişini ekledik */
+        }
+
+        .remove-btn:active {
+            color: #c0392b; /* Çöp kutusuna basıldığında rengini kırmızıya değiştiriyoruz */
+        }
+
+    </style>
+</head>
+<body>
+<div class="sidebar-toggle">☰</div>
+<div class="sidebar">
+    <ul>
+        <li><a href="menu.html">Main Menu</a></li>
+        <li><a href="#">Best Sellers</a></li>
+        <li><a href="dresses.html">Dresses</a></li>
+        <li><a href="blouses.html">Blouses</a></li>
+        <li><a href="panths.html">Pants</a></li>
+        <li><a href="jeans.html">Jeans</a></li>
+        <li><a href="jackets.html">Jackets</a></li>
+        <li><a href="sweathers.html">Sweaters</a></li>
+
+    </ul>
+</div>
+
+<header class="header">
+    <div class="info">WORLDWIDE SHIPPING AVAILABLE</div>
+    <div class="logo">
+        <a href="menu.html" style="color: #fff; text-decoration: none;">ZUZU</a>
+    </div>
+    <div class="icons">
+        <a href="#" title="Search">🔍</a>
+        <a href="#" title="User Login">👤</a>
+        <a href="favoriler.html" title="Favorites">💜</a>
+        <a href="#" title="Shopping Cart">🛒</a>
+    </div>
+</header>
+
+
+<h1> Your Favorites</h1>
+<div id="favorites-list" class="product-list"></div>
+
+<script>
+    // Sidebar açma/kapama işlevi
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open'); // Sidebar açılacak veya kapanacak
+    });
+
+    // LocalStorage'dan favorileri al
+const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+const cart = JSON.parse(localStorage.getItem('cart')) || []; // Sepet verisi
+
+const favoritesList = document.getElementById('favorites-list');
+
+// Favoriler varsa, her birini ekleyelim
+if (favorites.length > 0) {
+    favorites.forEach(product => {
+        // Eğer ürün geçerli değilse (undefined ya da eksik) geç
+        if (!product || !product.name || !product.image || !product.price) {
+            return; // Hatalı ürünü atla
+        }
+
+        const productElement = document.createElement('div');
+        productElement.classList.add('product');
+        productElement.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.price}</p>
+            <button class="add-to-cart">Add to Cart</button>
+            <span class="remove-btn">🗑️</span>
+        `;
+
+        // Çöp kutusuna tıklama işlevi
+        const removeBtn = productElement.querySelector('.remove-btn');
+        removeBtn.addEventListener('click', () => {
+            removeFromFavorites(product);
+        });
+
+        // "Sepete Ekle" butonuna tıklama işlevi
+        const addToCartButton = productElement.querySelector('.add-to-cart');
+        addToCartButton.addEventListener('click', () => {
+            addToCart(product);
+        });
+
+        favoritesList.appendChild(productElement);
+    });
+} else {
+    favoritesList.innerHTML = '<p>No favorites selected yet.</p>';
+}
+
+// Sepete ürün ekleme fonksiyonu
+function addToCart(product) {
+    cart.push(product); // Ürünü sepete ekle
+    localStorage.setItem('cart', JSON.stringify(cart)); // Sepeti localStorage'a kaydet
+    alert(${product.name} sepete eklendi!);
+}
+
+// Favorilerden ürün kaldırma fonksiyonu
+function removeFromFavorites(product) {
+    // Favorilerden ürünü kaldır
+    const updatedFavorites = favorites.filter(fav => fav.name !== product.name);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Favorileri güncelle
+    location.reload(); // Sayfayı yeniden yükleyerek favori listesini güncelle }
+     renderFavorites(); // Favori listesini tekrar render et
+}
+
+</script>
+</body>
+</html>

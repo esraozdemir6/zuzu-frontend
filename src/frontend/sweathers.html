@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweathers</title>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+.header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+}
+
+.header .logo {
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.header .info {
+    position: absolute;
+    left: 45px;
+    font-size: 12px;
+}
+
+.header .icons {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+}
+
+        }
+
+        .header .icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .icons a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .header .icons a:hover {
+            color: #ccc;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 45px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            color: #555;
+        }
+
+        .sidebar-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            color: #fff;
+        }
+        /* Heart button */
+.heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.heart.liked {
+    color: red;
+}
+
+.product {
+    position: relative;
+    text-align: center;
+    width: calc(20% - 20px);
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product a {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+@media (max-width: 1200px) {
+  .product-list {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(20% - 15px); /* 5 sütun düzeni */
+  }
+}
+
+@media (max-width: 992px) {
+  .product-list {
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(25% - 15px); /* 4 sütun düzeni */
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list {
+    gap: 10px;
+  }
+
+  .product {
+    width: calc(50% - 10px); /* 2 sütun düzeni */
+  }
+
+  .search-bar input {
+    width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  .product {
+    width: 100%; /* Tek sütun */
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+        /* Products Section */
+        .products {
+            margin: 20px;
+        }
+
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category h2 {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .product {
+            text-align: center;
+            width: calc(20% - 20px);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product a {
+            text-decoration: none;
+            color: inherit;
+        }
+    .product img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for scaling */
+}
+
+
+.product:hover img {
+    transform: scale(1.2); /* Scales the image to 120% of its original size */
+}
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .product p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .product button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .product button:hover {
+            background-color: #333;
+        }
+/* Cart Popup */
+.cart-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-height: 70%;
+    overflow-y: auto;
+}
+
+.cart-content h2 {
+    margin-bottom: 15px;
+}
+
+.cart-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-content li {
+    margin-bottom: 10px;
+}
+
+.cart-content button {
+    margin-top: 15px;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cart-content button:hover {
+    background: #444;
+}
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto; /* Ensures the footer is pushed to the bottom */
+        }
+
+    </style>
+</head>
+<body>
+<div class="sidebar-toggle">☰</div>
+<div class="sidebar">
+  <ul>
+    <li><a href="menu.html">Main Menu</a></li>
+    <li><a href="#">Best Sellers</a></li>
+    <li><a href="dresses.html">Dresses</a></li>
+    <li><a href="blouses.html">Blouses</a></li>
+    <li><a href="panths.html">Pants</a></li>
+    <li><a href="jeans.html">Jeans</a></li>
+    <li><a href="jackets.html">Jackets</a></li>
+    <li><a href="sweathers.html">Sweaters</a></li>
+
+  </ul>
+</div>
+
+<header class="header">
+  <div class="info">WORLDWIDE SHIPPING AVAILABLE</div>
+  <div class="icons">
+    <a href="search%20bar.html" title="Search">🔍</a>
+    <a href="sign%20in.html" title="User Login">👤</a>
+    <a href="favoriler.html" title="Favorites">💜</a>
+    <a href="#" title="Shopping Cart">🛒</a>
+  </div>
+  <div class="logo">
+    <a href="menu.html" style="color: #fff; text-decoration: none;">ZUZU</a>
+  </div>
+</header>
+<section class="products">
+  <div class="category">
+    <h2>Sweater</h2>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/3472/78a0/cd4f4557a48f/2e4413e77d4d/05010400660-c/05010400660-c.jpg?ts=1730734720592&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/1346/d985/bd9a4c5298ca/4f8ff6ae7c97/05010400210-c/05010400210-c.jpg?ts=1733151137822&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5143/aad6/6c444497ae2c/42e732a3b4cb/05071432250-c/05071432250-c.jpg?ts=1729494347363&w=419" alt="Ribbed knit sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Ribbed knit sweater </h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/3283/1130/ed6f423d9d51/4c083e5b4049/05010400140-c/05010400140-c.jpg?ts=1725359636250&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/51c9/1ae0/8a1e4cbaa1c6/a95991702778/05762897401-c/05762897401-c.jpg?ts=1731399077432&w=419" alt="Basic knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Basic knitted sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/13a7/c7b3/35d0489dbc3b/b449893bf52c/05010400100-c/05010400100-c.jpg?ts=1729494242481&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>"Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9596/a8d0/793b4c30808f/0c975c4aa0d6/05023563500-c/05023563500-c.jpg?ts=1727362554520&w=419" alt="Basic knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Basic knitted sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f881/0a9d/653b445592f8/29126215163c/05023563006-c/05023563006-c.jpg?ts=1733151131187&w=419" alt="Basic knitted sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Basic knitted sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/e20f/c91b/103f4587affa/74d35de09ff3/05652323450-c/05652323450-c.jpg?ts=1730102490873&w=419" alt="Crop faux fur biker jacket" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Crop faux fur biker jacket</h3>
+        <p>$84.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5760/9456/38a447d5a4c9/9ede61868120/01603479010-c/01603479010-c.jpg?ts=1733299055967&w=419" alt="Hair knitted crop sweater" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Hair knitted crop sweater </h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-list">
+        <div class="product">
+          <a href="https://example.com/striped-trousers" target="_blank">
+            <img src="https://static.e-stradivarius.net/assets/public/20ba/84cf/77204a059fc0/ada42d32c01f/08577400150-c/08577400150-c.jpg?ts=1733841984613&w=419" alt="Open shoulder knitted sweater" width="300" height="400">
+          </a>
+          <span class="heart">&#9829;</span>
+          <h3>Open shoulder knitted sweater</h3>
+          <p>$54.99</p>
+          <button>Add to Cart</button>
+        </div>
+        <div class="product">
+          <a href="https://example.com/striped-trousers" target="_blank">
+            <img src="https://static.e-stradivarius.net/assets/public/3c9b/50c4/8ebe4f3ab457/03748ad4ce64/08579380400-c/08579380400-c.jpg?ts=1726132696498&w=419" alt="Asymmetric knit sweater" width="300" height="400">
+          </a>
+          <span class="heart">&#9829;</span>
+          <h3>Asymmetric knit sweater</h3>
+          <p>$24.99</p>
+          <button>Add to Cart</button>
+        </div>
+        <div class="product">
+          <a href="https://example.com/striped-trousers" target="_blank">
+            <img src="https://static.e-stradivarius.net/assets/public/69bf/4869/ebe04e279bca/d4e2ce86747e/05014433210-c/05014433210-c.jpg?ts=1730734766275&w=419" alt="Felted V-neck sweater" width="300" height="400">
+          </a>
+          <span class="heart">&#9829;</span>
+          <h3>Felted V-neck sweater</h3>
+          <p>$39.99</p>
+          <button>Add to Cart</button>
+        </div>
+        <div class="product">
+          <a href="https://example.com/striped-trousers" target="_blank">
+            <img src="https://static.e-stradivarius.net/assets/public/a940/0d2c/0569471ea969/71019f4e57db/05010400006-c/05010400006-c.jpg?ts=1725458233099&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+          </a>
+          <span class="heart">&#9829;</span>
+          <h3>Soft textured knitted sweater</h3>
+          <p>$29.99</p>
+          <button>Add to Cart</button>
+        </div>
+        <div class="product">
+          <a href="https://example.com/striped-trousers" target="_blank">
+            <img src="https://static.e-stradivarius.net/assets/public/bb67/c965/d412470c8bab/b6356b02fffe/08557350428-c/08557350428-c.jpg?ts=1728975445045&w=419" alt="High collar knitted sweater" width="300" height="400">
+          </a>
+          <span class="heart">&#9829;</span>
+          <h3>High collar knitted sweater</h3>
+          <p>$39.99</p>
+          <button>Add to Cart</button>
+
+        </div>
+      </div>
+    </div>
+</section>
+<footer>
+  &copy; 2024 ZUZU. All rights reserved.
+</footer>
+
+<script>
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+    // Sepet Popup Açma/Kapama fonksiyonu
+ function toggleCart() {
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = (cartPopup.style.display === 'flex') ? 'none' : 'flex';
+    displayCartItems(); // Sepet içeriğini güncelle
+ }
+
+ // Sepetteki Ürünleri Gösterme
+ function displayCartItems() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = ''; // Listeyi temizle
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<li>Your cart is empty</li>';
+        return;
+    }
+
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <img src="${item.image}" width="50" height="50" style="margin-right:10px;">
+            <strong>${item.name}</strong> - ${item.price}
+        `;
+        cartItems.appendChild(li);
+    });
+
+    // Toplam fiyatı hesapla
+    calculateTotalPrice();
+ }
+
+ // Toplam Fiyat Hesaplama Fonksiyonu
+ function calculateTotalPrice() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
+
+    cart.forEach(item => {
+        // Fiyatı sayıya çevir ve toplamda topla
+        const price = parseFloat(item.price.replace('$', ''));
+        total += price;
+    });
+
+    // Toplam fiyatı ekranda göster
+    const totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.innerText = total.toFixed(2);  // Fiyatı 2 ondalıklı göster
+ }
+
+ // Sepet sayısını güncelleme
+ function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCount = cart.length;
+
+    const cartCountElement = document.getElementById('cartCount');
+    cartCountElement.innerText = cartCount;
+ }
+
+ // Sepete Ürün Ekleme
+ const addToCartButtons = document.querySelectorAll('.product button');
+ addToCartButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        const product = e.target.closest('.product');
+        const productName = product.querySelector('h3').innerText;
+        const productPrice = product.querySelector('p').innerText;
+        const productImage = product.querySelector('img').src;
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const productData = {
+            name: productName,
+            price: productPrice,
+            image: productImage
+        };
+
+        // Sepete ürün ekleme
+        cart.push(productData);
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Sepet sayısını güncelle
+        updateCartCount();
+        alert('Product added to cart!');
+    });
+ });
+
+ // Sepeti Temizle Fonksiyonu
+ function clearCart() {
+    // localStorage'daki cart verisini temizle
+    localStorage.removeItem('cart');
+
+    // Sepet öğelerini ekranda sıfırla
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '<li>Your cart is empty</li>'; // Sepet boş olduğunda gösterilecek mesaj
+
+    // Sepet sayısını sıfırla
+    updateCartCount();
+
+    // Toplam fiyatı sıfırla
+    const totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.innerText = '0.00'; // Toplam fiyatı sıfırla
+
+    // Kullanıcıya bildirim
+    alert('Your cart has been cleared!');
+ }
+
+ // Sepeti Kapatma Fonksiyonu
+ const closeCartButton = document.getElementById('closeCart');
+ closeCartButton.addEventListener('click', () => {
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = 'none'; // Sepet popup'ını kapat
+ });
+
+ // Sepet Butonuna Tıklama Fonksiyonu
+ const cartIcon = document.getElementById('cartIcon');
+ cartIcon.addEventListener('click', (e) => {
+    e.preventDefault();  // Sayfa yenilenmesin
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = 'flex';  // Sepet popup'ını aç
+    displayCartItems();  // Sepet öğelerini görüntüle
+ });
+
+ // Sayfa yüklendiğinde sepet öğelerini ve sayısını güncelle
+ window.addEventListener('load', () => {
+    displayCartItems();
+    updateCartCount();
+ });
+    // Heart button functionality
+const hearts = document.querySelectorAll('.heart');
+
+hearts.forEach(heart => {
+    heart.addEventListener('click', (e) => {
+        e.preventDefault(); // Sayfa yönlendirmesini engeller
+        heart.classList.toggle('liked'); // Kalp rengini değiştir
+
+        // Ürün bilgilerini al
+        const productElement = heart.closest('.product');
+        const productName = productElement.querySelector('h3').innerText;
+        const productPrice = productElement.querySelector('p').innerText;
+        const productImage = productElement.querySelector('img').src;
+
+        // Seçilen ürünü localStorage'a kaydet
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const productData = {
+            name: productName,
+            price: productPrice,
+            image: productImage
+        };
+
+        // Eğer ürün zaten favorilere eklenmişse, tekrar ekleme
+        if (!favorites.some(fav => fav.name === productName)) {
+            favorites.push(productData);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+    });
+});
+
+
+</script>
+</body>
+</html>

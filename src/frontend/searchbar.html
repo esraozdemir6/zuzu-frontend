@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+/* Search Bar */
+    .search-bar {
+      background-color: #000;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .search-bar input {
+      width: 80%;
+      max-width: 600px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+      background-color: #fff;
+    }
+
+    .search-bar .icons {
+      position: absolute;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .search-bar .icons a {
+      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .search-bar .icons a:hover {
+      color: #007BFF;
+    }
+
+    /* Products Section */
+    .products {
+      margin: 20px;
+    }
+
+    .category {
+      margin-bottom: 40px;
+    }
+
+    .category h2 {
+      text-align: left;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .product {
+      text-align: center;
+      width: calc(20% - 20px);
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none; /* Tüm ürünler başlangıçta gizli */
+    }
+
+    .product.recommended {
+      display: block; /* Sadece önerilen ürünler başlangıçta gösterilir */
+    }
+
+    .product img {
+      width: 100%;
+      height: auto;
+    }
+
+    .product h3 {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .product p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .product button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .product button:hover {
+      background-color: #333;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto; /* Ensures the footer is pushed to the bottom */
+    }
+    .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 45px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            color: #555;
+        }
+
+        .sidebar-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            color: #fff;
+        }
+    /* Genel medya sorguları */
+@media (max-width: 1200px) {
+  .product-list {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(25% - 15px);
+  }
+}
+
+@media (max-width: 992px) {
+  .product-list {
+    gap: 10px;
+  }
+
+  .product {
+    width: calc(33.333% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list {
+    gap: 10px;
+  }
+
+  .product {
+    width: calc(50% - 10px);
+  }
+
+  .search-bar input {
+    width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  .product {
+    width: 100%;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Ürünler arasındaki boşluk */
+  justify-content: flex-start; /* Ürünleri sola hizala */
+}
+.product img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for scaling */
+}
+
+.product:hover img {
+    transform: scale(1.2); /* Scales the image to 120% of its original size */
+}
+
+</style>
+</head>
+<body>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="What are you looking for?">
+  <div class="icons">
+    <a href="search%20bar.html" title="Search">🔍</a>
+    <a href="sign in.html" title="User Login">👤</a>
+    <a href="favoriler.html" title="Favorites">💜</a>
+    <a href="#" title="Shopping Cart">🛒</a>
+  </div>
+</div>
+
+<div class="sidebar-toggle">☰</div>
+<div class="sidebar">
+
+  <ul>
+    <li><a href="menu.html">Main Menu</a></li>
+    <li><a href="#">Best Sellers</a></li>
+    <li><a href="dresses.html">Dresses</a></li>
+    <li><a href="blouses.html">Blouses</a></li>
+    <li><a href="panths.html">Pants</a></li>
+    <li><a href="jeans.html">Jeans</a></li>
+    <li><a href="jackets.html">Jackets</a></li>
+    <li><a href="sweathers.html">Sweaters</a></li>
+
+  </ul>
+</div>
+
+<section class="products">
+  <div class="category">
+    <h2 id="recommendedHeading">Recommended for You</h2>
+    <div class="product-list" id="productList">
+      <div class="product recommended" data-name="D98 straight fit jeans">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/4873/f03e/a04a44d49c8c/1ef4a1d929f2/0149949977401-a10/0149949977401-a10.jpg?ts=1723807996860&w=649" alt="D98 straight fit jeans" width="300" height="400">
+        </a>
+        <h3>D98 straight fit jeans</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product recommended" data-name="Long flowing stylish trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/8e4a/53b9/fe1f4329a748/49218e0674a3/01235540140-c/01235540140-c.jpg?ts=1732550159399&w=535" alt="Long flowing stylish trousers" width="300" height="400">
+        </a>
+        <h3>Long flowing stylish trousers</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product recommended" data-name="Basic knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/51c9/1ae0/8a1e4cbaa1c6/a95991702778/05762897401-c/05762897401-c.jpg?ts=1731399077432&w=419" alt="Basic knitted sweater" width="300" height="400">
+        </a>
+        <h3>Basic knitted sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product recommended" data-name="Soft textured knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/3472/78a0/cd4f4557a48f/2e4413e77d4d/05010400660-c/05010400660-c.jpg?ts=1730734720592&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product recommended" data-name="Normal waist straight fit jean">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/86d9/f0f6/c78d41739279/81af326861ed/07353880709-a1/07353880709-a1.jpg?ts=1721912074553&w=308" alt="Normal waist straight fit jean" width="300" height="400">
+        </a>
+        <h3>Normal waist straight fit jean</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <!-- Ek Ürünler elbise-->
+      <div class="product" data-name="Zippered short dress">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/0a37/bbc9/3837481cbaf9/b62cd9d1ad9c/02258577001-c/02258577001-c.jpg?ts=1732525899652" alt="Zippered short dress" width="300" height="400">
+        </a>
+        <h3>Zippered short dress</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Drop-shoulder short dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/b95d/b1e1/31264f95873a/bd8cacb3d593/02256370001-c/02256370001-c.jpg?ts=1732636267196" alt="Striped culotte trousers">
+        </a>
+        <h3>Drop-shoulder short dress</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Halter neck midi dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/2238/8c9c/5ee041ceaf30/2cf23abd708d/06312121001-a1/06312121001-a1.jpg?ts=1724337211990&w=844" alt="Linen blend loose fit trousers" width="300" height="400">
+        </a>
+        <h3>Halter neck midi dress</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Sequin short dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9b8f/2a35/ac8b4317a6be/df0e5995056f/06272323001-a1/06272323001-a1.jpg?ts=1730890223590&w=844" alt="Loose fit trousers" width="300" height="400">
+        </a>
+        <h3>Sequin short dress</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Draped midi dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/710c/2308/4c5e41c79385/14e3d28924ba/06270882001-c/06270882001-c.jpg?ts=1733146757328&w=844" alt="Wide-leg fabric trousers" width="300" height="400">
+        </a>
+        <h3>Draped midi dress</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Thin strap dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/a7c8/d7c6/037e4709bfba/3ed5b9302f61/02251116001-c/02251116001-c.jpg?ts=1722856303868&w=844" alt="High waist fabric trousers" width="300" height="400">
+        </a>
+        <h3>Thin strap dress</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Short ruched dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/1ff1/16c6/f3024601bf62/9c57bba4edba/02355512400-c/02355512400-c.jpg?ts=1723020123595&w=844" alt="Flowing straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Short ruched dress</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Knit midi dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/78e3/75fd/733e449dbc76/8e04ba787443/08509843431-c/08509843431-c.jpg?ts=1727347418934&w=844" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Knit midi dress</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Belted blazer dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/87c1/279f/48fe4a45b4d9/92d043258998/05936127001-a1/05936127001-a1.jpg?ts=1725461032758&w=844" alt="Wide leg trousers" width="300" height="400">
+        </a>
+        <h3>Belted blazer dress</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Sequin short dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/e4cb/0ca1/5b164c1aba53/ab158172a07b/06273322150-a1/06273322150-a1.jpg?ts=1731510398767&w=844" alt="Wide leg faux leather trousers" width="300" height="400">
+        </a>
+        <h3>Sequin short dress</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Halter neck midi dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/0ed5/19b1/6def4942af06/00a6684f9be8/06312121001-c/06312121001-c.jpg?ts=1724337214482&w=844" alt="High waist fabric trousers" width="300" height="400">
+        </a>
+        <h3>Halter neck midi dress</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Short asymmetrical dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/8e47/2c78/ddcd40828e34/ccf4782a542b/08212140001-a1/08212140001-a1.jpg?ts=1726211890510&w=844" alt="Ribbed bell-bottom trousers" width="300" height="400">
+        </a>
+        <h3>Short asymmetrical dress</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Bodycon long strappy dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/78af/8beb/d4f148b1bb0b/818dce4a4979/07183102010-a1/07183102010-a1.jpg?ts=1731675459747&w=844" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Bodycon long strappy dress</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Balloon sleeve midi dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/1d62/6967/66124d44a816/ad1dcc766020/02327128150-c/02327128150-c.jpg?ts=1721052059235&w=844" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Balloon sleeve midi dress</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Turtleneck long dress">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/4550/5509/530e4d13a127/c8c5dc372e58/06354831101-c/06354831101-c.jpg?ts=1719932858884&w=844" alt="Classic bell-bottom trousers" width="300" height="400">
+        </a>
+        <h3>Turtleneck long dress</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <!-- Ek Ürünler blouses-->
+      <div class="product" data-name="Blouse with buttons">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/934c/ae07/f46649689d2a/bea9d4a9ff0b/07096407150-c/07096407150-c.jpg?ts=1721810002086&w=405" alt="Blouse with buttons" width="300" height="400">
+        </a>
+        <h3>Blouse with buttons</h3>
+        <p>$19.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Blouse with buttons">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/e958/732a/70d7491eba9f/2426511e2be2/07096407003-c/07096407003-c.jpg?ts=1722506606463&w=405" alt="Blouse with buttons">
+        </a>
+        <h3>Blouse with buttons</h3>
+        <p>$19.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Long sleeve lace top">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/07a2/b2b3/a52a4c0ebd45/2a70ff369ebb/06633401001-c/06633401001-c.jpg?ts=1732787671147&w=405" alt="Long sleeve lace top" width="300" height="400">
+        </a>
+        <h3>Long sleeve lace top</h3>
+        <p>$17.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Flowing embroidered blouse">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/106e/61c6/d3fe417290ce/f1109d310194/06049170250-c/06049170250-c.jpg?ts=1725273909395&w=405" alt="Flowing embroidered blouse" width="300" height="400">
+        </a>
+        <h3>Flowing embroidered blouse</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Flowing embroidered blouse">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/a44a/276f/14484a9680c7/95608ee8c964/06043758003-c/06043758003-c.jpg?ts=1721814780794&w=405" alt="Flowing embroidered blouse" width="300" height="400">
+        </a>
+        <h3>Flowing embroidered blouse</h3>
+        <p>$27.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Long sleeve lace top">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/666c/7d44/2c7f4580842a/d94e82703bcb/06633401004-c/06633401004-c.jpg?ts=1724232010863&w=405" alt="Long sleeve lace top" width="300" height="400">
+        </a>
+        <h3>Long sleeve lace top</h3>
+        <p>$20.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Linen blend shirt">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/fa19/b908/dee1495a8885/712e2433ff69/02027022003-c/02027022003-c.jpg?ts=1727362123004&w=405" alt="Linen blend shirt" width="300" height="400">
+        </a>
+        <h3>Linen blend shirt</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Linen blend shirt">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/0236/f98c/7d9e4e8c965f/6f4e4d031064/02027744001-c/02027744001-c.jpg?ts=1727705219747&w=405" alt="Linen blend shirt" width="300" height="400">
+        </a>
+        <h3>Linen blend shirt</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Embroidered top with ties">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/00a9/28d6/88a745c6b604/f6f8b17e61cc/06183747003-c/06183747003-c.jpg?ts=1718112756838&w=405" alt="Embroidered top with ties" width="300" height="400">
+        </a>
+        <h3>Embroidered top with ties</h3>
+        <p>$22.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Asymmetric tulle top with scarf">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/14fa/5869/c0f5480f9067/9abf23166e05/08149109401-c/08149109401-c.jpg?ts=1733328622111&w=405" alt="Asymmetric tulle top with scarf" width="300" height="400">
+        </a>
+        <h3>Asymmetric tulle top with scarf</h3>
+        <p>$30.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Asymmetric tulle top with scarf">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f094/e9ef/200a4a0e83c4/0be63440bcbd/08149227011-c/08149227011-c.jpg?ts=1733321398660&w=405" alt="Asymmetric tulle top with scarf" width="300" height="400">
+        </a>
+        <h3>Asymmetric tulle top with scarf</h3>
+        <p>$24.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Smart bustier top with buttons">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9fd2/1d0e/8ae142d388d6/ea2a7a5a10a3/06046523001-c/06046523001-c.jpg?ts=1723020621305&w=405" alt="Smart bustier top with buttons" width="300" height="400">
+        </a>
+        <h3>Smart bustier top with buttons</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Oversize check shirt">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/2b69/c96e/31ca492da586/d98867ae8cd6/06052906150-c/06052906150-c.jpg?ts=1724747115424&w=405" alt="Oversize check shirt" width="300" height="400">
+        </a>
+        <h3>Oversize check shirt</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Check tulle T-shirt">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/a6c7/433b/d74448d1b150/360f5324675d/08116322430-c/08116322430-c.jpg?ts=1722864664181&w=405" alt="Check tulle T-shirt" width="300" height="400">
+        </a>
+        <h3>Check tulle T-shirt</h3>
+        <p>$21.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Satin shirt with bows">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/ead6/bea2/49e24b89841c/736b942698cc/08167908001-c/08167908001-c.jpg?ts=1724232093086&w=405" alt="Satin shirt with bows" width="300" height="400">
+        </a>
+        <h3>Satin shirt with bows</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <!-- Ek Ürünler pants-->
+      <div class="product" data-name="Striped culotte trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/7d3f/cf75/8fc1478ab2c1/cdddd3a6b3c0/01199340004-c/01199340004-c.jpg?ts=1726673695050&w=535" alt="Striped culotte trousers">
+        </a>
+        <h3>Striped culotte trousers</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Linen blend loose fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c37a/14cd/c4a0441ca476/9fa6c3dde4e5/01235331004-c/01235331004-c.jpg?ts=1720090538763&w=535" alt="Linen blend loose fit trousers" width="300" height="400">
+        </a>
+        <h3>Linen blend loose fit trousers</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Loose fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/3ccf/f6e0/331241f090db/9840db9ce55a/01235570001-a15/01235570001-a15.jpg?ts=1723563151162&w=535" alt="Loose fit trousers" width="300" height="400">
+        </a>
+        <h3>Loose fit trousers</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Wide-leg fabric trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/ef16/c937/2e4d4231bea7/04e0af75a087/04503804001-c/04503804001-c.jpg?ts=1729758514606&w=535" alt="Wide-leg fabric trousers" width="300" height="400">
+        </a>
+        <h3>Wide-leg fabric trousers</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="High waist fabric trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6ee1/d5fb/fbbc4addb29b/dc7b5f57a6dd/08298010001-c/08298010001-c.jpg?ts=1725260917788&w=535" alt="High waist fabric trousers" width="300" height="400">
+        </a>
+        <h3>High waist fabric trousers</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Flowing straight fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9e56/6e01/eaa14c84aa4e/edf59c6fe526/04020090456-c/04020090456-c.jpg?ts=1729758793679&w=535" alt="Flowing straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Flowing straight fit trousers</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Classic straight fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c2bb/8f5b/e1f3418ea9c1/92452ea80fab/04562340150-c/04562340150-c.jpg?ts=1729758797757&w=535" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Classic straight fit trousers</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Wide leg trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/63b0/c845/2ad34a0fb9b7/34a33d4cd67b/04512257250-c/04512257250-c.jpg?ts=1727342429456&w=308" alt="Wide leg trousers" width="300" height="400">
+        </a>
+        <h3>Wide leg trousers</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Wide leg faux leather trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5f47/8892/a65c41478e19/f867a196231d/04565318001-c/04565318001-c.jpg?ts=1727711397878&w=535" alt="Wide leg faux leather trousers" width="300" height="400">
+        </a>
+        <h3>Wide leg faux leather trousers</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="High waist fabric trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f7ea/d10f/a5124538b48a/d8acf8536cd9/08298010150-c/08298010150-c.jpg?ts=1722246062029&w=535" alt="High waist fabric trousers" width="300" height="400">
+        </a>
+        <h3>High waist fabric trousers</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Ribbed bell-bottom trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/12c3/1699/95aa47539a0e/850bea2164d5/08740723210-c/08740723210-c.jpg?ts=1723452406982&w=535" alt="Ribbed bell-bottom trousers" width="300" height="400">
+        </a>
+        <h3>Ribbed bell-bottom trousers</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Classic straight fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6c6e/2310/9aa0421bbba3/a03e6c7e7f0c/04562340550-c/04562340550-c.jpg?ts=1725359581741&w=535" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Classic straight fit trousers</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Classic straight fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c5da/d561/ffc746a99734/2c7a8db73e3a/04500789004-c/04500789004-c.jpg?ts=1729000700855&w=535" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Classic straight fit trousers</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Classic bell-bottom trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/50bd/b0bd/f1624dcaa39e/2d10d2f9b007/04501473456-c/04501473456-c.jpg?ts=1724766342852&w=535" alt="Classic bell-bottom trousers" width="300" height="400">
+        </a>
+        <h3>Classic bell-bottom trousers</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <!-- Ek Ürünler jean-->
+      <div class="product" data-name="D96 cropped straight fit jeans">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/da23/f916/3781487cb44b/ffbd67505950/01496859715-c/01496859715-c.jpg?ts=1732694431745&w=649" alt="D96 cropped straight fit jeans" width="300" height="400">
+        </a>
+        <h3>D96 cropped straight fit jeans</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="D92 Straight wide jean">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9bba/28f8/bf4d4c76b041/3078c2d9b5df/04891805003-c/04891805003-c.jpg?ts=1724225464529&w=308" alt="D92 Straight wide" width="300" height="400">
+        </a>
+        <h3>D92 Straight wide jean</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="1465 Slim fit mom jean">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/1d9d/5963/807d45b89d73/df2e0e96af7e/01465420773-01-a10/01465420773-01-a10.jpg?ts=1723544357697&w=535" alt="1465 Slim fit mom jean" width="300" height="400">
+        </a>
+        <h3>1465 Slim fit mom jean</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Normal waist straight fit jean">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/ffa3/2de8/af874e39af63/df8f767267fc/07353873712-c/07353873712-c.jpg?ts=1729070671804&w=308" alt="Normal waist straight fit jean" width="300" height="400">
+        </a>
+        <h3>Normal waist straight fit jean</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Shiny stone straight fit jeans">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/d5a9/b0ad/cfd04c868f8e/0e1edcb696be/04813941707-04-c/04813941707-04-c.jpg?ts=1731426734961&w=649" alt="Shiny stone straight fit jeans" width="300" height="400">
+        </a>
+        <h3>Shiny stone straight fit jeans</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="D77 Minimal jeans with pockets">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6f88/c765/94ef48528c27/aceb281afbb7/01477888700-c/01477888700-c.jpg?ts=1725981810879&w=535" alt="D77 Minimal jeans with pockets" width="300" height="400">
+        </a>
+        <h3>D77 Minimal jeans with pockets</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Spanish leg slim fit jeans">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/05dd/b098/eec048b09705/be2e71fe2c85/04804660707-01-a10/04804660707-01-a10.jpg?ts=1723544588845&w=649" alt="Spanish leg slim fit jeans" width="300" height="400">
+        </a>
+        <h3>Spanish leg slim fit jeans</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Loose fit jeans">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5e0d/2d75/87914c7689e7/fdbf3eed81a4/07356506703-c/07356506703-c.jpg?ts=1728975276866&w=308" alt="Loose fit jeans" width="300" height="400">
+        </a>
+        <h3>Loose fit jeans</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Straight fit jeans">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c8e2/e2d2/d1d9458db2be/0cbac6d7a081/08343202708-a1/08343202708-a1.jpg?ts=1720021263431&w=420" alt="Straight fit jeans" width="300" height="400">
+        </a>
+        <h3>Straight fit jeans</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Studded straight fit jeans">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/7695/ec52/c4c64f0fb22e/028312e94f72/04895883704-c/04895883704-c.jpg?ts=1721727299851&w=649" alt="Studded straight fit jeans" width="300" height="400">
+        </a>
+        <h3>Studded straight fit jeans</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Straight jeans with side studs">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/cb22/a42c/b0ff4b308c56/dff523a49326/04896228709-10-c/04896228709-10-c.jpg?ts=1731426795828&w=535" alt="Straight jeans with side studs" width="300" height="400">
+        </a>
+        <h3>Straight jeans with side studs</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Straight fit minimal jean">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/d622/757e/20864ede9130/6ff37a2bdabb/01470690701-c/01470690701-c.jpg?ts=1722871265877&w=649" alt="Straight fit minimal jean" width="300" height="400">
+        </a>
+        <h3>Straight fit minimal jean</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="D82 balloon fit jean">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f9e7/b790/cdfb44c3ba3d/33b1fc3fc66e/04882847709-c/04882847709-c.jpg?ts=1729199364633&w=535" alt="D82 balloon fit jean" width="300" height="400">
+        </a>
+        <h3>D82 balloon fit jean</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <!-- Ek Ürünler jacket-->
+      <div class="product" data-name="Contrast faux fur biker jacket">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6e45/789c/05284b62914b/e3998bc6a3a9/05761473001-c/05761473001-c.jpg?ts=1730721872392&w=419" alt="Contrast faux fur biker jacket" width="300" height="400">
+        </a>
+        <h3>Contrast faux fur biker jacket</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Faux fur jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6853/4ba4/707a493893d3/1f89804371f5/05651638660-c/05651638660-c.jpg?ts=1732096815457&w=419" alt="Faux fur jacket" width="300" height="400">
+        </a>
+        <h3>Faux fur jacket</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Faux leather biker jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/418b/6d7b/b0ac44c3b8b9/f35e5fa22ba5/05760425004-c/05760425004-c.jpg?ts=1726662996000&w=419" alt="Faux leather biker jacket " width="300" height="400">
+        </a>
+        <h3>Faux leather biker jacket</h3>
+        <p>$84.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Faux fur lined biker jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/53b0/83f3/63cb47d8877a/6696a08ceb23/05764606004-c/05764606004-c.jpg?ts=1726663012136&w=419" alt="Faux fur lined biker jacket" width="300" height="400">
+        </a>
+        <h3>Faux fur lined biker jacket</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Double-sided jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/51c9/1ae0/8a1e4cbaa1c6/a95991702778/05762897401-c/05762897401-c.jpg?ts=1731399077432&w=419" alt="Double-sided  jacket" width="300" height="400">
+        </a>
+        <h3>Double-sided jacket</h3>
+        <p>$114.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Faux fur lined biker jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/4808/2783/315a45e9af44/40aca2f3d115/05764606001-c/05764606001-c.jpg?ts=1726663106273&w=419" alt="Faux fur lined biker jacket" width="300" height="400">
+        </a>
+        <h3>Faux fur lined biker jacket</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Faux fur jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/08da/fea9/509d4670b922/87b1156a74cf/05651638001-c/05651638001-c.jpg?ts=1728909469350&w=419" alt="Faux fur jacket" width="300" height="400">
+        </a>
+        <h3>Faux fur jacket</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Classic straight fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c2bb/8f5b/e1f3418ea9c1/92452ea80fab/04562340150-c/04562340150-c.jpg?ts=1729758797757&w=535" alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Classic straight fit trousers</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Soft faux fur biker jacket">
+        <<a href="https://example.com/striped-trousers" target="_blank">
+        <img src="https://static.e-stradivarius.net/assets/public/0f1a/1a43/ec76495ba21e/a045f30ee167/05759424001-c/05759424001-c.jpg?ts=1729066855609&w=419" alt="Soft faux fur biker jacket" width="300" height="400">
+      </a>
+        <h3>Soft faux fur biker jacket</h3>
+        <p>$84.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Regular fit jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/70e8/404c/147345f38356/d0af535eff27/05751537440-c/05751537440-c.jpg?ts=1725548612865&w=419" alt="Regular fit jacket " width="300" height="400">
+        </a>
+        <h3>Regular fit jacket</h3>
+        <p>$84.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Hooded faux shearling jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/2a75/e118/f03f4776b6ca/f21365f1bdc7/05764605456-c/05764605456-c.jpg?ts=1726663112925&w=419" alt="Hooded faux shearling jacket" width="300" height="400">
+        </a>
+        <h3>Hooded faux shearling jacket</h3>
+        <p>$54.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Classic straight fit trousers">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c751/b8c2/1a044db88be2/444440dbb09c/01771469250-c/01771469250-c.jpg?ts=1733735482301&w=419" alt="Reefer" width="300" height="400">
+        </a>
+        <h3>Reefer</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Leather Biker">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/bdf2/11dc/ee0941d78041/f4e963ceefd9/01792997001-a1/01792997001-a1.jpg?ts=1725966179220&w=844"alt="Classic straight fit trousers" width="300" height="400">
+        </a>
+        <h3>Leather Biker</h3>
+        <p>$54.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Soft short jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/d3cb/fe1d/caaa46b5a4f6/343f0bb5da6f/05716483660-c/05716483660-c.jpg?ts=1725892302397&w=419" alt="Soft short jacket" width="300" height="400">
+        </a>
+        <h3>Soft short jacket</h3>
+        <p>$45.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Short boucle jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6d2c/ae40/f9464d84bd18/66eb2e7cc173/05715812004-c/05715812004-c.jpg?ts=1733151193650&w=419" alt="Short boucle jacket" width="300" height="400">
+        </a>
+        <h3>Short boucle jacket</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <!-- Ek Ürünler sweater-->
+      <div class="product" data-name="Ribbed knit sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5143/aad6/6c444497ae2c/42e732a3b4cb/05071432250-c/05071432250-c.jpg?ts=1729494347363&w=419" alt="Ribbed knit sweater" width="300" height="400">
+        </a>
+        <h3>Ribbed knit sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Soft textured knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/1346/d985/bd9a4c5298ca/4f8ff6ae7c97/05010400210-c/05010400210-c.jpg?ts=1733151137822&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Soft textured knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/3283/1130/ed6f423d9d51/4c083e5b4049/05010400140-c/05010400140-c.jpg?ts=1725359636250&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Soft textured knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/13a7/c7b3/35d0489dbc3b/b449893bf52c/05010400100-c/05010400100-c.jpg?ts=1729494242481&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <h3>"Soft textured knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Basic knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9596/a8d0/793b4c30808f/0c975c4aa0d6/05023563500-c/05023563500-c.jpg?ts=1727362554520&w=419" alt="Basic knitted sweater" width="300" height="400">
+        </a>
+        <h3>Basic knitted sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Basic knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f881/0a9d/653b445592f8/29126215163c/05023563006-c/05023563006-c.jpg?ts=1733151131187&w=419" alt="Basic knitted sweater" width="300" height="400">
+        </a>
+        <h3>Basic knitted sweater</h3>
+        <p>$34.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Crop faux fur biker jacket">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/e20f/c91b/103f4587affa/74d35de09ff3/05652323450-c/05652323450-c.jpg?ts=1730102490873&w=419" alt="Crop faux fur biker jacket" width="300" height="400">
+        </a>
+        <h3>Crop faux fur biker jacket</h3>
+        <p>$84.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Hair knitted crop sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5760/9456/38a447d5a4c9/9ede61868120/01603479010-c/01603479010-c.jpg?ts=1733299055967&w=419" alt="Hair knitted crop sweater" width="300" height="400">
+        </a>
+        <h3>Hair knitted crop sweater </h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Open shoulder knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/20ba/84cf/77204a059fc0/ada42d32c01f/08577400150-c/08577400150-c.jpg?ts=1733841984613&w=419" alt="Open shoulder knitted sweater" width="300" height="400">
+        </a>
+        <h3>Open shoulder knitted sweater</h3>
+        <p>$54.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Asymmetric knit sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/3c9b/50c4/8ebe4f3ab457/03748ad4ce64/08579380400-c/08579380400-c.jpg?ts=1726132696498&w=419" alt="Asymmetric knit sweater" width="300" height="400">
+        </a>
+        <h3>Asymmetric knit sweater</h3>
+        <p>$24.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Felted V-neck sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/69bf/4869/ebe04e279bca/d4e2ce86747e/05014433210-c/05014433210-c.jpg?ts=1730734766275&w=419" alt="Felted V-neck sweater" width="300" height="400">
+        </a>
+        <h3>Felted V-neck sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="Soft textured knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/a940/0d2c/0569471ea969/71019f4e57db/05010400006-c/05010400006-c.jpg?ts=1725458233099&w=419" alt="Soft textured knitted sweater" width="300" height="400">
+        </a>
+        <h3>Soft textured knitted sweater</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product" data-name="High collar knitted sweater">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/bb67/c965/d412470c8bab/b6356b02fffe/08557350428-c/08557350428-c.jpg?ts=1728975445045&w=419" alt="High collar knitted sweater" width="300" height="400">
+        </a>
+        <h3>High collar knitted sweater</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+<footer>
+  &copy; 2024 ZUZU. All rights reserved.
+</footer>
+
+<script>
+
+  const searchInput = document.getElementById("searchInput");
+  const productList = document.getElementById("productList");
+  const products = productList.querySelectorAll(".product");
+  const recommendedHeading = document.getElementById("recommendedHeading");
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+
+    searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+
+    if (query === "") {
+      // Arama boşsa önerilen ürünleri geri getir
+      recommendedHeading.classList.remove("hidden");
+      products.forEach(product => {
+        product.classList.contains("recommended")
+          ? (product.style.display = "block")
+          : (product.style.display = "none");
+      });
+    } else {
+      // Arama yapılıyorsa tüm ilgili ürünleri göster
+      recommendedHeading.classList.add("hidden");
+      products.forEach(product => {
+        const productName = product.dataset.name.toLowerCase();
+        product.style.display = productName.includes(query) ? "block" : "none";
+      });
+    }
+  });
+
+</script>
+
+</body>
+</html>

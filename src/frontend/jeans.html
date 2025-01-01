@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeans</title>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+.header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+}
+
+.header .logo {
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.header .info {
+    position: absolute;
+    left: 45px;
+    font-size: 12px;
+}
+
+.header .icons {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+}
+
+        }
+
+        .header .icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .icons a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .header .icons a:hover {
+            color: #ccc;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 45px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            color: #555;
+        }
+
+        .sidebar-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            color: #fff;
+        }
+        /* Heart button */
+.heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.heart.liked {
+    color: red;
+}
+
+.product {
+    position: relative;
+    text-align: center;
+    width: calc(20% - 20px);
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product a {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+@media (max-width: 1200px) {
+  .product-list {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(20% - 15px); /* 5 sütun düzeni */
+  }
+}
+
+@media (max-width: 992px) {
+  .product-list {
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(25% - 15px); /* 4 sütun düzeni */
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list {
+    gap: 10px;
+  }
+
+  .product {
+    width: calc(50% - 10px); /* 2 sütun düzeni */
+  }
+
+  .search-bar input {
+    width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  .product {
+    width: 100%; /* Tek sütun */
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+        /* Products Section */
+        .products {
+            margin: 20px;
+        }
+
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category h2 {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .product {
+            text-align: center;
+            width: calc(20% - 20px);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product a {
+            text-decoration: none;
+            color: inherit;
+        }
+    .product img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for scaling */
+}
+
+
+.product:hover img {
+    transform: scale(1.2); /* Scales the image to 120% of its original size */
+}
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .product p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .product button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .product button:hover {
+            background-color: #333;
+        }
+/* Cart Popup */
+.cart-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-height: 70%;
+    overflow-y: auto;
+}
+
+.cart-content h2 {
+    margin-bottom: 15px;
+}
+
+.cart-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-content li {
+    margin-bottom: 10px;
+}
+
+.cart-content button {
+    margin-top: 15px;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cart-content button:hover {
+    background: #444;
+}
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto; /* Ensures the footer is pushed to the bottom */
+        }
+
+    </style>
+</head>
+<body>
+<div class="sidebar-toggle">☰</div>
+<div class="sidebar">
+  <ul>
+    <li><a href="menu.html">Main Menu</a></li>
+    <li><a href="#">Best Sellers</a></li>
+    <li><a href="dresses.html">Dresses</a></li>
+    <li><a href="blouses.html">Blouses</a></li>
+    <li><a href="panths.html">Pants</a></li>
+    <li><a href="jeans.html">Jeans</a></li>
+    <li><a href="jackets.html">Jackets</a></li>
+    <li><a href="sweathers.html">Sweaters</a></li>
+
+  </ul>
+</div>
+
+<header class="header">
+  <div class="info">WORLDWIDE SHIPPING AVAILABLE</div>
+  <div class="icons">
+    <a href="search%20bar.html" title="Search">🔍</a>
+    <a href="sign%20in.html" title="User Login">👤</a>
+    <a href="favoriler.html" title="Favorites">💜</a>
+    <a href="#" title="Shopping Cart">🛒</a>
+  </div>
+  <div class="logo">
+    <a href="menu.html" style="color: #fff; text-decoration: none;">ZUZU</a>
+  </div>
+</header>
+<section class="products">
+  <!-- Jean Category -->
+  <div class="category">
+    <h2>Jean</h2>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/4873/f03e/a04a44d49c8c/1ef4a1d929f2/0149949977401-a10/0149949977401-a10.jpg?ts=1723807996860&w=649" alt="D98 straight fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>D98 straight fit jeans</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/da23/f916/3781487cb44b/ffbd67505950/01496859715-c/01496859715-c.jpg?ts=1732694431745&w=649" alt="D96 cropped straight fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>D96 cropped straight fit jeans</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9bba/28f8/bf4d4c76b041/3078c2d9b5df/04891805003-c/04891805003-c.jpg?ts=1724225464529&w=308" alt="D92 Straight wide" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>D92 Straight wide</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/1d9d/5963/807d45b89d73/df2e0e96af7e/01465420773-01-a10/01465420773-01-a10.jpg?ts=1723544357697&w=535" alt="1465 Slim fit mom jean" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>1465 Slim fit mom jean</h3>
+        <p>$49.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/86d9/f0f6/c78d41739279/81af326861ed/07353880709-a1/07353880709-a1.jpg?ts=1721912074553&w=308" alt="Normal waist straight fit jean" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Normal waist straight fit jean</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/ffa3/2de8/af874e39af63/df8f767267fc/07353873712-c/07353873712-c.jpg?ts=1729070671804&w=308" alt="Normal waist straight fit jean" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Normal waist straight fit jean</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/d5a9/b0ad/cfd04c868f8e/0e1edcb696be/04813941707-04-c/04813941707-04-c.jpg?ts=1731426734961&w=649" alt="Shiny stone straight fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Shiny stone straight fit jeans</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/6f88/c765/94ef48528c27/aceb281afbb7/01477888700-c/01477888700-c.jpg?ts=1725981810879&w=535" alt="D77 Minimal jeans with pockets" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>D77 Minimal jeans with pockets</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/05dd/b098/eec048b09705/be2e71fe2c85/04804660707-01-a10/04804660707-01-a10.jpg?ts=1723544588845&w=649" alt="Spanish leg slim fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Spanish leg slim fit jeans</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/5e0d/2d75/87914c7689e7/fdbf3eed81a4/07356506703-c/07356506703-c.jpg?ts=1728975276866&w=308" alt="Loose fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Loose fit jeans</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/c8e2/e2d2/d1d9458db2be/0cbac6d7a081/08343202708-a1/08343202708-a1.jpg?ts=1720021263431&w=420" alt="Straight fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Straight fit jeans</h3>
+        <p>$59.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/7695/ec52/c4c64f0fb22e/028312e94f72/04895883704-c/04895883704-c.jpg?ts=1721727299851&w=649" alt="Studded straight fit jeans" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Studded straight fit jeans</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/cb22/a42c/b0ff4b308c56/dff523a49326/04896228709-10-c/04896228709-10-c.jpg?ts=1731426795828&w=535" alt="Straight jeans with side studs" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Straight jeans with side studs</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/d622/757e/20864ede9130/6ff37a2bdabb/01470690701-c/01470690701-c.jpg?ts=1722871265877&w=649" alt="Straight fit minimal jean" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Straight fit minimal jean</h3>
+        <p>$69.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f9e7/b790/cdfb44c3ba3d/33b1fc3fc66e/04882847709-c/04882847709-c.jpg?ts=1729199364633&w=535" alt="D82 balloon fit jean" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>D82 balloon fit jean</h3>
+        <p>$79.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  &copy; 2024 ZUZU. All rights reserved.
+</footer>
+
+<footer>
+  &copy; 2024 ZUZU. All rights reserved.
+</footer>
+
+<script>
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+    // Sepet Popup Açma/Kapama fonksiyonu
+ function toggleCart() {
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = (cartPopup.style.display === 'flex') ? 'none' : 'flex';
+    displayCartItems(); // Sepet içeriğini güncelle
+ }
+
+ // Sepetteki Ürünleri Gösterme
+ function displayCartItems() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = ''; // Listeyi temizle
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<li>Your cart is empty</li>';
+        return;
+    }
+
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <img src="${item.image}" width="50" height="50" style="margin-right:10px;">
+            <strong>${item.name}</strong> - ${item.price}
+        `;
+        cartItems.appendChild(li);
+    });
+
+    // Toplam fiyatı hesapla
+    calculateTotalPrice();
+ }
+
+ // Toplam Fiyat Hesaplama Fonksiyonu
+ function calculateTotalPrice() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
+
+    cart.forEach(item => {
+        // Fiyatı sayıya çevir ve toplamda topla
+        const price = parseFloat(item.price.replace('$', ''));
+        total += price;
+    });
+
+    // Toplam fiyatı ekranda göster
+    const totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.innerText = total.toFixed(2);  // Fiyatı 2 ondalıklı göster
+ }
+
+ // Sepet sayısını güncelleme
+ function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCount = cart.length;
+
+    const cartCountElement = document.getElementById('cartCount');
+    cartCountElement.innerText = cartCount;
+ }
+
+ // Sepete Ürün Ekleme
+ const addToCartButtons = document.querySelectorAll('.product button');
+ addToCartButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        const product = e.target.closest('.product');
+        const productName = product.querySelector('h3').innerText;
+        const productPrice = product.querySelector('p').innerText;
+        const productImage = product.querySelector('img').src;
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const productData = {
+            name: productName,
+            price: productPrice,
+            image: productImage
+        };
+
+        // Sepete ürün ekleme
+        cart.push(productData);
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Sepet sayısını güncelle
+        updateCartCount();
+        alert('Product added to cart!');
+    });
+ });
+
+ // Sepeti Temizle Fonksiyonu
+ function clearCart() {
+    // localStorage'daki cart verisini temizle
+    localStorage.removeItem('cart');
+
+    // Sepet öğelerini ekranda sıfırla
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '<li>Your cart is empty</li>'; // Sepet boş olduğunda gösterilecek mesaj
+
+    // Sepet sayısını sıfırla
+    updateCartCount();
+
+    // Toplam fiyatı sıfırla
+    const totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.innerText = '0.00'; // Toplam fiyatı sıfırla
+
+    // Kullanıcıya bildirim
+    alert('Your cart has been cleared!');
+ }
+
+ // Sepeti Kapatma Fonksiyonu
+ const closeCartButton = document.getElementById('closeCart');
+ closeCartButton.addEventListener('click', () => {
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = 'none'; // Sepet popup'ını kapat
+ });
+
+ // Sepet Butonuna Tıklama Fonksiyonu
+ const cartIcon = document.getElementById('cartIcon');
+ cartIcon.addEventListener('click', (e) => {
+    e.preventDefault();  // Sayfa yenilenmesin
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = 'flex';  // Sepet popup'ını aç
+    displayCartItems();  // Sepet öğelerini görüntüle
+ });
+
+ // Sayfa yüklendiğinde sepet öğelerini ve sayısını güncelle
+ window.addEventListener('load', () => {
+    displayCartItems();
+    updateCartCount();
+ });
+    // Heart button functionality
+const hearts = document.querySelectorAll('.heart');
+
+hearts.forEach(heart => {
+    heart.addEventListener('click', (e) => {
+        e.preventDefault(); // Sayfa yönlendirmesini engeller
+        heart.classList.toggle('liked'); // Kalp rengini değiştir
+
+        // Ürün bilgilerini al
+        const productElement = heart.closest('.product');
+        const productName = productElement.querySelector('h3').innerText;
+        const productPrice = productElement.querySelector('p').innerText;
+        const productImage = productElement.querySelector('img').src;
+
+        // Seçilen ürünü localStorage'a kaydet
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const productData = {
+            name: productName,
+            price: productPrice,
+            image: productImage
+        };
+
+        // Eğer ürün zaten favorilere eklenmişse, tekrar ekleme
+        if (!favorites.some(fav => fav.name === productName)) {
+            favorites.push(productData);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+    });
+});
+
+
+</script>
+</body>
+</html>

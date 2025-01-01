@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blouses</title>
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+.header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+}
+
+.header .logo {
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.header .info {
+    position: absolute;
+    left: 45px;
+    font-size: 12px;
+}
+
+.header .icons {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+}
+
+        }
+
+        .header .icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .icons a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .header .icons a:hover {
+            color: #ccc;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 45px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            color: #555;
+        }
+
+        .sidebar-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            color: #fff;
+        }
+        /* Heart button */
+.heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.heart.liked {
+    color: red;
+}
+
+.product {
+    position: relative;
+    text-align: center;
+    width: calc(20% - 20px);
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product a {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+@media (max-width: 1200px) {
+  .product-list {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(20% - 15px); /* 5 sütun düzeni */
+  }
+}
+
+@media (max-width: 992px) {
+  .product-list {
+    gap: 15px;
+  }
+
+  .product {
+    width: calc(25% - 15px); /* 4 sütun düzeni */
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list {
+    gap: 10px;
+  }
+
+  .product {
+    width: calc(50% - 10px); /* 2 sütun düzeni */
+  }
+
+  .search-bar input {
+    width: 90%;
+  }
+}
+
+@media (max-width: 576px) {
+  .product {
+    width: 100%; /* Tek sütun */
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+        /* Products Section */
+        .products {
+            margin: 20px;
+        }
+
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category h2 {
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .product {
+            text-align: center;
+            width: calc(20% - 20px);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product a {
+            text-decoration: none;
+            color: inherit;
+        }
+    .product img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for scaling */
+}
+
+
+.product:hover img {
+    transform: scale(1.2); /* Scales the image to 120% of its original size */
+}
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .product p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .product button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .product button:hover {
+            background-color: #333;
+        }
+/* Cart Popup */
+.cart-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-height: 70%;
+    overflow-y: auto;
+}
+
+.cart-content h2 {
+    margin-bottom: 15px;
+}
+
+.cart-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-content li {
+    margin-bottom: 10px;
+}
+
+.cart-content button {
+    margin-top: 15px;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.cart-content button:hover {
+    background: #444;
+}
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto; /* Ensures the footer is pushed to the bottom */
+        }
+
+    </style>
+</head>
+<body>
+<div class="sidebar-toggle">☰</div>
+<div class="sidebar">
+  <ul>
+    <li><a href="menu.html">Main Menu</a></li>
+    <li><a href="#">Best Sellers</a></li>
+    <li><a href="dresses.html">Dresses</a></li>
+    <li><a href="blouses.html">Blouses</a></li>
+    <li><a href="panths.html">Pants</a></li>
+    <li><a href="jeans.html">Jeans</a></li>
+    <li><a href="jackets.html">Jackets</a></li>
+    <li><a href="sweathers.html">Sweaters</a></li>
+
+  </ul>
+</div>
+
+<header class="header">
+  <div class="info">WORLDWIDE SHIPPING AVAILABLE</div>
+  <div class="icons">
+    <a href="search%20bar.html" title="Search">🔍</a>
+    <a href="sign%20in.html" title="User Login">👤</a>
+    <a href="favoriler.html" title="Favorites">💜</a>
+    <a href="#" title="Shopping Cart">🛒</a>
+  </div>
+  <div class="logo">
+    <a href="menu.html" style="color: #fff; text-decoration: none;">ZUZU</a>
+  </div>
+</header>
+
+<section class="products">
+  <!-- Blouses Category -->
+  <div class="category">
+    <h2>Blouses</h2>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/long-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/934c/ae07/f46649689d2a/bea9d4a9ff0b/07096407150-c/07096407150-c.jpg?ts=1721810002086&w=405" alt="Blouse with buttons" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Blouse with buttons</h3>
+        <p>$19.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/e958/732a/70d7491eba9f/2426511e2be2/07096407003-c/07096407003-c.jpg?ts=1722506606463&w=405" alt="Blouse with buttons">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Blouse with buttons</h3>
+        <p>$19.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/07a2/b2b3/a52a4c0ebd45/2a70ff369ebb/06633401001-c/06633401001-c.jpg?ts=1732787671147&w=405" alt="Long sleeve lace top" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Long sleeve lace top</h3>
+        <p>$17.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/106e/61c6/d3fe417290ce/f1109d310194/06049170250-c/06049170250-c.jpg?ts=1725273909395&w=405" alt="Flowing embroidered blouse" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Flowing embroidered blouse</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/a44a/276f/14484a9680c7/95608ee8c964/06043758003-c/06043758003-c.jpg?ts=1721814780794&w=405" alt="Flowing embroidered blouse" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Flowing embroidered blouse</h3>
+        <p>$27.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/666c/7d44/2c7f4580842a/d94e82703bcb/06633401004-c/06633401004-c.jpg?ts=1724232010863&w=405" alt="Long sleeve lace top" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Long sleeve lace top</h3>
+        <p>$20.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/fa19/b908/dee1495a8885/712e2433ff69/02027022003-c/02027022003-c.jpg?ts=1727362123004&w=405" alt="Linen blend shirt" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Linen blend shirt</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/0236/f98c/7d9e4e8c965f/6f4e4d031064/02027744001-c/02027744001-c.jpg?ts=1727705219747&w=405" alt="Linen blend shirt" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Linen blend shirt</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/00a9/28d6/88a745c6b604/f6f8b17e61cc/06183747003-c/06183747003-c.jpg?ts=1718112756838&w=405" alt="Embroidered top with ties" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Embroidered top with ties</h3>
+        <p>$22.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/14fa/5869/c0f5480f9067/9abf23166e05/08149109401-c/08149109401-c.jpg?ts=1733328622111&w=405" alt="Asymmetric tulle top with scarf" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Asymmetric tulle top with scarf</h3>
+        <p>$30.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-list">
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/f094/e9ef/200a4a0e83c4/0be63440bcbd/08149227011-c/08149227011-c.jpg?ts=1733321398660&w=405" alt="Asymmetric tulle top with scarf" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Asymmetric tulle top with scarf</h3>
+        <p>$24.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/9fd2/1d0e/8ae142d388d6/ea2a7a5a10a3/06046523001-c/06046523001-c.jpg?ts=1723020621305&w=405" alt="Smart bustier top with buttons" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Smart bustier top with buttons</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/2b69/c96e/31ca492da586/d98867ae8cd6/06052906150-c/06052906150-c.jpg?ts=1724747115424&w=405" alt="Oversize check shirt" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Oversize check shirt</h3>
+        <p>$39.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/a6c7/433b/d74448d1b150/360f5324675d/08116322430-c/08116322430-c.jpg?ts=1722864664181&w=405" alt="Check tulle T-shirt" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Check tulle T-shirt</h3>
+        <p>$21.99</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product">
+        <a href="https://example.com/striped-trousers" target="_blank">
+          <img src="https://static.e-stradivarius.net/assets/public/ead6/bea2/49e24b89841c/736b942698cc/08167908001-c/08167908001-c.jpg?ts=1724232093086&w=405" alt="Satin shirt with bows" width="300" height="400">
+        </a>
+        <span class="heart">&#9829;</span>
+        <h3>Satin shirt with bows</h3>
+        <p>$29.99</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  &copy; 2024 ZUZU. All rights reserved.
+</footer>
+<script>
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+    // Sepet Popup Açma/Kapama fonksiyonu
+ function toggleCart() {
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = (cartPopup.style.display === 'flex') ? 'none' : 'flex';
+    displayCartItems(); // Sepet içeriğini güncelle
+ }
+
+ // Sepetteki Ürünleri Gösterme
+ function displayCartItems() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = ''; // Listeyi temizle
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<li>Your cart is empty</li>';
+        return;
+    }
+
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <img src="${item.image}" width="50" height="50" style="margin-right:10px;">
+            <strong>${item.name}</strong> - ${item.price}
+        `;
+        cartItems.appendChild(li);
+    });
+
+    // Toplam fiyatı hesapla
+    calculateTotalPrice();
+ }
+
+ // Toplam Fiyat Hesaplama Fonksiyonu
+ function calculateTotalPrice() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
+
+    cart.forEach(item => {
+        // Fiyatı sayıya çevir ve toplamda topla
+        const price = parseFloat(item.price.replace('$', ''));
+        total += price;
+    });
+
+    // Toplam fiyatı ekranda göster
+    const totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.innerText = total.toFixed(2);  // Fiyatı 2 ondalıklı göster
+ }
+
+ // Sepet sayısını güncelleme
+ function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCount = cart.length;
+
+    const cartCountElement = document.getElementById('cartCount');
+    cartCountElement.innerText = cartCount;
+ }
+
+ // Sepete Ürün Ekleme
+ const addToCartButtons = document.querySelectorAll('.product button');
+ addToCartButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        const product = e.target.closest('.product');
+        const productName = product.querySelector('h3').innerText;
+        const productPrice = product.querySelector('p').innerText;
+        const productImage = product.querySelector('img').src;
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const productData = {
+            name: productName,
+            price: productPrice,
+            image: productImage
+        };
+
+        // Sepete ürün ekleme
+        cart.push(productData);
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Sepet sayısını güncelle
+        updateCartCount();
+        alert('Product added to cart!');
+    });
+ });
+
+ // Sepeti Temizle Fonksiyonu
+ function clearCart() {
+    // localStorage'daki cart verisini temizle
+    localStorage.removeItem('cart');
+
+    // Sepet öğelerini ekranda sıfırla
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '<li>Your cart is empty</li>'; // Sepet boş olduğunda gösterilecek mesaj
+
+    // Sepet sayısını sıfırla
+    updateCartCount();
+
+    // Toplam fiyatı sıfırla
+    const totalPriceElement = document.getElementById('totalPrice');
+    totalPriceElement.innerText = '0.00'; // Toplam fiyatı sıfırla
+
+    // Kullanıcıya bildirim
+    alert('Your cart has been cleared!');
+ }
+
+ // Sepeti Kapatma Fonksiyonu
+ const closeCartButton = document.getElementById('closeCart');
+ closeCartButton.addEventListener('click', () => {
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = 'none'; // Sepet popup'ını kapat
+ });
+
+ // Sepet Butonuna Tıklama Fonksiyonu
+ const cartIcon = document.getElementById('cartIcon');
+ cartIcon.addEventListener('click', (e) => {
+    e.preventDefault();  // Sayfa yenilenmesin
+    const cartPopup = document.getElementById('cartPopup');
+    cartPopup.style.display = 'flex';  // Sepet popup'ını aç
+    displayCartItems();  // Sepet öğelerini görüntüle
+ });
+
+ // Sayfa yüklendiğinde sepet öğelerini ve sayısını güncelle
+ window.addEventListener('load', () => {
+    displayCartItems();
+    updateCartCount();
+ });
+    // Heart button functionality
+const hearts = document.querySelectorAll('.heart');
+
+hearts.forEach(heart => {
+    heart.addEventListener('click', (e) => {
+        e.preventDefault(); // Sayfa yönlendirmesini engeller
+        heart.classList.toggle('liked'); // Kalp rengini değiştir
+
+        // Ürün bilgilerini al
+        const productElement = heart.closest('.product');
+        const productName = productElement.querySelector('h3').innerText;
+        const productPrice = productElement.querySelector('p').innerText;
+        const productImage = productElement.querySelector('img').src;
+
+        // Seçilen ürünü localStorage'a kaydet
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const productData = {
+            name: productName,
+            price: productPrice,
+            image: productImage
+        };
+
+        // Eğer ürün zaten favorilere eklenmişse, tekrar ekleme
+        if (!favorites.some(fav => fav.name === productName)) {
+            favorites.push(productData);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+    });
+});
+
+
+</script>
+</body>
+</html>
